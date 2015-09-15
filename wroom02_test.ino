@@ -34,7 +34,16 @@ void setup() {
   Serial.begin(115200);
   delay(100);
   
-  Wire.begin(12, 14);
+  Wire.begin(12, 14); //i2c start
+  lcd.begin(16, 2);
+  lcd.setContrast(30);
+  // Print a message to the LCD.
+  lcd.setCursor(0,0);
+  lcd.print("wroom02 test");
+  lcd.setCursor(0,1);
+  lcd.print("name:");
+  lcd.print(kNAME);
+  delay(2000);
 
 
 
@@ -42,6 +51,9 @@ void setup() {
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
+  lcd.clear();
+  lcd.setCursor(0,0);lcd.print("Connecting to ");
+  lcd.setCursor(0,1);lcd.print(ssid);
 
   WiFi.begin(ssid, password);
 
@@ -56,11 +68,10 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   delay(100);
-  lcd.begin(16, 2);
-  lcd.setContrast(30);
   // Print a message to the LCD.
+  lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("local ip");
+  lcd.print("local ip got!");
   lcd.setCursor(0,1);
   lcd.print(WiFi.localIP());
 
@@ -124,7 +135,7 @@ void loop() {
     udp.write((const uint8_t*)buf, strlen(buf));
     udp.endPacket();
   }
-  //受信テスト。シリアルに出力するだけ。
+  //受信テスト。シリアルとLCDに出力するだけ。
   int size = udp.parsePacket();
   Serial.print("size=");
   Serial.println(size);
